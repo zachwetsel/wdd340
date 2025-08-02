@@ -19,12 +19,13 @@ h1, h2{
   width: 100%;
   max-width: 100%;
 }
-nav li {
+nav li a {
   color: white;
   flex: 1;
   text-align: center;
   padding: 1rem;
   white-space: nowrap;
+  list-style-type: none;
 }
 nav ul {
   background-color: black;
@@ -174,6 +175,15 @@ nav ul {
   object-fit: contain;
 }
 
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  list-style: none;
+  margin: 0;
+}
+
 
 /*Large Screen Adjustments*/
 @media (min-width: 768px) {
@@ -238,4 +248,46 @@ nav ul {
     grid-column: 1/2;
     grid-row: 1/2;
   }
+  #inv-display {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+#inv-display li img {
+  max-width: 100%;
+  height: clamp(120px, 20vw, 180px);
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+#inv-display li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.namePrice {
+  margin-top: auto;
+}
+
+.namePrice hr {
+  margin: 0.5rem 0;
+}
+
+.namePrice h2 {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.namePrice a {
+  text-decoration: none;
+  color: #2596be;
+  font-weight: 600;
+}
+
+.namePrice span {
+  display: block;
+  margin-top: 0.25rem;
+  font-weight: bold;
+  color: #000;
 }
