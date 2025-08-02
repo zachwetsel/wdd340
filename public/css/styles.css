@@ -184,6 +184,24 @@ nav ul {
   margin: 0;
 }
 
+.vehicle-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.vehicle-detail img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 6px;
+}
+
+.vehicle-info {
+  font-size: 1rem;
+}
+
 
 /*Large Screen Adjustments*/
 @media (min-width: 768px) {
@@ -250,6 +268,10 @@ nav ul {
   }
   #inv-display {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .vehicle-detail {
+    flex-direction: row;
+    align-items: flex-start;
   }
 }
 
