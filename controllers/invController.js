@@ -23,6 +23,11 @@ invCont.buildByInventoryId = async function (req, res, next) {
   try {
     const inv_id = req.params.inv_id
     const data = await invModel.getVehicleById(inv_id)
+    data.inv_price = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(data.inv_price)
+    data.inv_miles = Intl.NumberFormat("en-US").format(data.inv_miles)
     const detailHtml = await utilities.buildVehicleDetail(data)
     const nav = await utilities.getNav()
     const title = `${data.inv_year} ${data.inv_make} ${data.inv_model}`
