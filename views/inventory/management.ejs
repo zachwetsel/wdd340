@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <main class="container">
+      <h1><%= title %></h1>
+
+      <% if (typeof message !== 'undefined' && message) { %>
+        <div class="flash flash-success"><%- message %></div>
+      <% } %>
+
+      <ul class="manage-links">
+        <li><a href="/inv/add-classification">Add New Classification</a></li>
+        <li><a href="/inv/add-inventory">Add New Vehicle</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

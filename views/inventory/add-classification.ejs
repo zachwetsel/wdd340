@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <main class="container">
+      <h1><%= title %></h1>
+
+      <% if (typeof message !== 'undefined' && message) { %>
+        <div class="flash"><%- message %></div>
+      <% } %>
+
+      <% if (typeof errors !== 'undefined' && errors.length) { %>
+        <ul class="form-errors">
+          <% errors.forEach(e => { %><li><%- e.msg %></li><% }) %>
+        </ul>
+      <% } %>
+
+      <form action="/inv/add-classification" method="post" novalidate class="form-card">
+        <div class="form-row">
+          <label for="classification_name">Classification Name</label>
+          <input
+            type="text"
+            id="classification_name"
+            name="classification_name"
+            required
+            pattern="^[A-Za-z0-9]+$"
+            title="No spaces or special characters."
+            placeholder="e.g., Truck"
+          />
+          <small>No spaces or special characters allowed.</small>
+        </div>
+
+        <button type="submit" class="btn-primary">Add Classification</button>
+      </form>
+    </main>
+  </body>
+</html>

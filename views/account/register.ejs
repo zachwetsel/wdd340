@@ -26,11 +26,11 @@
             <label for="account_firstname">First Name</label>
             <input
               type="text"
-              id="account_firstname"
+              id="accountFirstname"
               name="account_firstname"
               required
               autocomplete="given-name"
-              value="<%= (typeof locals !== 'undefined' && locals.account_firstname) ? locals.account_firstname : '' %>"
+              value="<%= locals.account_firstname %>"
             />
           </div>
 
@@ -43,7 +43,7 @@
               name="account_lastname"
               required
               autocomplete="family-name"
-              value="<%= (typeof locals !== 'undefined' && locals.account_lastname) ? locals.account_lastname : '' %>"
+              value="<%= locals.account_lastname %>"
             />
           </div>
 
@@ -56,7 +56,7 @@
               name="account_email"
               required
               autocomplete="email"
-              value="<%= (typeof locals !== 'undefined' && locals.account_email) ? locals.account_email : '' %>"
+              value="<%= locals.account_email %>"
             />
           </div>
 
