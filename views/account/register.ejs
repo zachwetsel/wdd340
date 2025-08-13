@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+
+    <main class="auth-container">
+      <h1><%= title %></h1>
+
+    
+      <% if (typeof message !== 'undefined' && message) { %>
+        <div class="flash flash-info"><%- message %></div>
+      <% } %>
+
+      <% if (errors) { %>
+          <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+      <% }) %>
+          </ul>
+      <% } %>
+
+      <section class="auth-card">
+        <form action="/account/register" method="post" novalidate class="auth-form">
+          <!-- First Name -->
+          <div class="form-row">
+            <label for="account_firstname">First Name</label>
+            <input
+              type="text"
+              id="account_firstname"
+              name="account_firstname"
+              required
+              autocomplete="given-name"
+              value="<%= (typeof locals !== 'undefined' && locals.account_firstname) ? locals.account_firstname : '' %>"
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-row">
+            <label for="account_lastname">Last Name</label>
+            <input
+              type="text"
+              id="account_lastname"
+              name="account_lastname"
+              required
+              autocomplete="family-name"
+              value="<%= (typeof locals !== 'undefined' && locals.account_lastname) ? locals.account_lastname : '' %>"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="form-row">
+            <label for="account_email">Email</label>
+            <input
+              type="email"
+              id="account_email"
+              name="account_email"
+              required
+              autocomplete="email"
+              value="<%= (typeof locals !== 'undefined' && locals.account_email) ? locals.account_email : '' %>"
+            />
+          </div>
+
+          <!-- Password -->
+          <div class="form-row">
+            <label for="account_password">Password</label>
+            <div class="password-field">
+              <input
+                type="password"
+                id="account_password"
+                name="account_password"
+                required
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                autocomplete="new-password"
+                aria-describedby="pw-help"
+              />
+              <button class="btn-ghost" type="button" id="togglePw" aria-controls="account_password" aria-pressed="false">Show</button>
+            </div>
+            <small id="pw-help" class="help">
+              Must be at least 12 characters and include 1 uppercase letter, 1 number, and 1 special character.
+            </small>
+          </div>
+
+          <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      // toggle password visibility
+      (function () {
+        const pw = document.getElementById('account_password');
+        const toggle = document.getElementById('togglePw');
+        if (pw && toggle) {
+          toggle.addEventListener('click', () => {
+            const isText = pw.type === 'text';
+            pw.type = isText ? 'password' : 'text';
+            toggle.textContent = isText ? 'Show' : 'Hide';
+            toggle.setAttribute('aria-pressed', String(!isText));
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
