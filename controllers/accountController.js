@@ -142,4 +142,57 @@ async function buildAccountManagement(req, res, next) {
   })
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement }
+/** GET: Edit Account */
+async function editAccount(req, res) {
+  const account_id = parseInt(req.params.account_id)
+  const nav = await utilities.getNav()
+  const accountData = await accountModel.getAccountById(account_id)
+
+  res.render("account/update", {
+    title: "Update Account",
+    nav,
+    ...accountData,
+    errors: [],
+    message: req.flash("notice")?.[0] || null,
+  })
+}
+
+/** POST: Update Account Info */
+async function updateAccount(req, res) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+  const updateResult = await accountModel.updateAccountInfo(account_id, account_firstname, account_lastname, account_email)
+
+  if (updateResult) {
+    req.flash("notice", "Account updated.")
+    const accountData = await accountModel.getAccountById(account_id)
+    const nav = await utilities.getNav()
+    res.render("account/management", {
+      title: "Account Management",
+      nav,
+      accountData,
+      message: req.flash("notice")?.[0] || null,
+    })
+  } else {
+    req.flash("notice", "Update failed.")
+    res.redirect(`/account/update/${account_id}`)
+  }
+}
+
+/** POST: Update Password */
+async function updatePassword(req, res) {
+  const { account_id, account_password } = req.body
+  const hashedPassword = await bcrypt.hash(account_password, 10)
+  const result = await accountModel.updatePassword(account_id, hashedPassword)
+
+  if (result) {
+    req.flash("notice", "Password updated.")
+    const accountData = await accountModel.getAccountById(account_id)
+    const nav = await utilities.getNav()
+    res.render("account/management", { title: "Account Management", nav, accountData })
+  } else {
+    req.flash("notice", "Password update failed.")
+    res.redirect(`/account/update/${account_id}`)
+  }
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, editAccount, updateAccount, updatePassword }

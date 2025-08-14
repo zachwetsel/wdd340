@@ -110,4 +110,53 @@ validate.checkLoginData = async (req, res, next) => {
     next()
 }
 
+validate.updateRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .notEmpty()
+      .withMessage("Please provide a first name."),
+    body("account_lastname")
+      .trim()
+      .notEmpty()
+      .withMessage("Please provide a last name."),
+    body("account_email")
+      .trim()
+      .isEmail()
+      .withMessage("A valid email is required."),
+  ];
+};
+
+validate.passwordRules = () => [
+  body("account_password")
+    .trim()
+    .notEmpty()
+    .isStrongPassword({
+      minLength: 12,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    })
+    .withMessage("Password does not meet requirements."),
+]
+
+validate.checkPassword = async (req, res, next) => {
+  const { account_id } = req.body
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    const accountData = await accountModel.getAccountById(account_id)
+
+    return res.status(400).render("account/update", {
+      title: "Update Account",
+      nav,
+      errors: errors.array(),
+      ...accountData,
+    })
+  }
+  next()
+}
+
 module.exports = validate

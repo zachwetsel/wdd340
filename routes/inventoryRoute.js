@@ -23,6 +23,7 @@ router.get("/", utilities.handleErrors(invController.buildManagement))
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification))
 router.post(
     "/add-classification",
+    utilities.checkLogin, utilities.checkEmployeeOrAdmin,
     invValidate.classificationRules(),
     invValidate.checkClassificationData,
     utilities.handleErrors(invController.createClassification)
@@ -33,6 +34,7 @@ router.get("/add-inventory", utilities.handleErrors(invController.buildAddInvent
 router.post(
     "/add-inventory",
     invValidate.inventoryRules(),
+    utilities.checkLogin, utilities.checkEmployeeOrAdmin,
     invValidate.checkInventoryData,
     utilities.handleErrors(invController.createInventory)
 )
@@ -41,21 +43,25 @@ router.post(
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
 // Edit inventory view
-router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
+router.get("/edit/:inv_id", utilities.checkLogin, utilities.checkEmployeeOrAdmin, utilities.handleErrors(invController.editInventoryView))
 
 // Route for updating inventory
-router.post("/update", invValidate.newInventoryRules(), invValidate.checkUpdateData, utilities.handleErrors(invController.updateInventory))
+router.post("/update", invValidate.newInventoryRules(), utilities.checkLogin, utilities.checkEmployeeOrAdmin, invValidate.checkUpdateData, utilities.handleErrors(invController.updateInventory))
 
 // Show delete confirmation view
 router.get(
   "/delete/:inv_id",
+  utilities.checkLogin, utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.deleteConfirmView)
 )
 
 // Carry out the delete
 router.post(
   "/delete",
+  utilities.checkLogin,
+  utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.deleteInventory)
 )
+
 
 module.exports = router;

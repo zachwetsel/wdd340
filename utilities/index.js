@@ -134,7 +134,23 @@ Util.checkJWTToken = (req, res, next) => {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
   }
- }
+}
 
+/* ****************************************
+ *  Middleware for account privileges
+ * ************************************ */
+function checkEmployeeOrAdmin(req, res, next) {
+  if (
+    res.locals.loggedin &&
+    (res.locals.accountData.account_type === "Admin" ||
+     res.locals.accountData.account_type === "Employee")
+  ) {
+    return next()
+  }
 
+  req.flash("notice", "You must be logged in with sufficient privileges.")
+  return res.redirect("/account/login")
+}
+
+Util.checkEmployeeOrAdmin = checkEmployeeOrAdmin
 module.exports = Util

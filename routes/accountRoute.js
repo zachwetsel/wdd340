@@ -5,6 +5,7 @@ const utilities = require("../utilities")
 const accountController = require("../controllers/accountController")
 const regValidate = require("../utilities/account-validation")
 
+
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 // Process the registration data
@@ -22,5 +23,14 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement))
+
+router.get("/update/:account_id", utilities.checkLogin, accountController.editAccount)
+router.post("/update", regValidate.updateRules(), regValidate.checkLoginData, accountController.updateAccount)
+router.post("/update-password", regValidate.passwordRules(), regValidate.checkPassword, accountController.updatePassword)
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("jwt")
+  res.redirect("/")
+})
 
 module.exports = router
