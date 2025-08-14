@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <main class="container">
+      <h1><%= title %></h1>
+
+      <p>Confirm Deletion — The delete is permanent.</p>
+
+      <% if (typeof message !== 'undefined' && message) { %>
+        <div class="flash"><%- message %></div>
+      <% } %>
+
+      <% if (typeof errors !== 'undefined' && errors && errors.length) { %>
+        <ul class="form-errors">
+          <% errors.forEach(e => { %><li><%- e.msg %></li><% }) %>
+        </ul>
+      <% } %>
+
+      <form action="/inv/delete" method="post" class="form-card">
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+
+        <div class="form-row">
+          <label>Make</label>
+          <input type="text" value="<%= inv_make %>" readonly>
+        </div>
+
+        <div class="form-row">
+          <label>Model</label>
+          <input type="text" value="<%= inv_model %>" readonly>
+        </div>
+
+        <div class="form-row">
+          <label>Year</label>
+          <input type="text" value="<%= inv_year %>" readonly>
+        </div>
+
+        <div class="form-row">
+          <label>Price</label>
+          <input type="text" value="<%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inv_price) %>" readonly>
+        </div>
+
+        <button type="submit" class="btn-danger">Delete</button>
+      </form>
+    </main>
+  </body>
+</html>

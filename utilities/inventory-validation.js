@@ -12,7 +12,7 @@ validate.classificationRules = () => [
     .matches(/^[A-Za-z0-9]+$/).withMessage("No spaces or special characters are allowed."),
 ]
 
-validate.checkClassificationData = async (req, resizeBy, next) => {
+validate.checkClassificationData = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         const nav = await utilities.getNav()
@@ -53,6 +53,32 @@ validate.checkInventoryData = async (req, res, next) => {
       classificationList,
       // sticky
       ...req.body
+    })
+  }
+  next()
+}
+
+
+validate.newInventoryRules = () => [
+  body("inv_id").isInt({ min: 1 }).withMessage("Invalid vehicle id."),
+  ...validate.inventoryRules(),
+]
+
+
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList(req.body.classification_id)
+    const itemName = `${req.body.inv_make || ""} ${req.body.inv_model || ""}`.trim()
+
+    return res.status(400).render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect,
+      message: "Please fix the errors below.",
+      errors: errors.array(),
+      ...req.body, // includes inv_id and all fields
     })
   }
   next()

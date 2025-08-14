@@ -37,4 +37,25 @@ router.post(
     utilities.handleErrors(invController.createInventory)
 )
 
+// JSON endpoint used by inventory.js
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+// Edit inventory view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
+
+// Route for updating inventory
+router.post("/update", invValidate.newInventoryRules(), invValidate.checkUpdateData, utilities.handleErrors(invController.updateInventory))
+
+// Show delete confirmation view
+router.get(
+  "/delete/:inv_id",
+  utilities.handleErrors(invController.deleteConfirmView)
+)
+
+// Carry out the delete
+router.post(
+  "/delete",
+  utilities.handleErrors(invController.deleteInventory)
+)
+
 module.exports = router;

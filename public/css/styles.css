@@ -434,3 +434,19 @@ input:focus, textarea:focus, select:focus {
   padding-left: 1rem; 
   color: #7a0b0b; 
 }
+
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+#inventoryDisplay th,
+#inventoryDisplay td {
+  border: 1px solid #e6e6e6;
+  padding: .6rem .8rem;
+  text-align: left;
+}
+#inventoryDisplay thead {
+  background: #f7fafb;
+  font-weight: 600;
+}
