@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+
+
+    <main>
+      <h1><%= title %></h1>
+
+      <% if (notice) { %>
+        <div class="flash"><%= notice %></div>
+      <% } %>
+
+      <% if (favorites && favorites.length) { %>
+        <ul class="favorites-list">
+          <% favorites.forEach((fav) => { %>
+            <li class="favorite-item">
+              <a href="/inv/detail/<%= fav.inv_id %>">
+                <% if (fav.inv_thumbnail) { %>
+                  <img src="<%= fav.inv_thumbnail %>" alt="<%= fav.inv_make %> <%= fav.inv_model %> thumbnail">
+                <% } %>
+                <h2><%= fav.display_name || (fav.inv_year + " " + fav.inv_make + " " + fav.inv_model) %></h2>
+              </a>
+
+              <p>Price: <%= fav.display_price %></p>
+
+              <form action="/account/favorite" method="post">
+                <input type="hidden" name="item_id" value="<%= fav.inv_id %>">
+                <button type="submit">💔 Remove</button>
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>You have no favorite items yet. Browse the inventory and click “❤️ Favorite”.</p>
+      <% } %>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

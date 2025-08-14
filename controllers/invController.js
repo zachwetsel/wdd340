@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
+const favoritesModel = require("../models/favorites-model")
 
 const invCont = {}
 
@@ -22,13 +23,23 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildByInventoryId = async function (req, res, next) {
   try {
     const inv_id = req.params.inv_id
-    const data = await invModel.getVehicleById(inv_id)
-    data.inv_price = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(data.inv_price)
-    data.inv_miles = new Intl.NumberFormat("en-US").format(data.inv_miles)
-    const detailHtml = await utilities.buildVehicleDetail(data)
+    const item = await invModel.getVehicleById(inv_id) 
+    if (!item) return next(new Error("Vehicle not found"))
+
+    const dataForDetail = {
+      ...item,
+      inv_price: new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(item.inv_price),
+      inv_miles: new Intl.NumberFormat("en-US").format(item.inv_miles),
+    }
+
+    const detailHtml = await utilities.buildVehicleDetail(dataForDetail)
     const nav = await utilities.getNav()
-    const title = `${data.inv_year} ${data.inv_make} ${data.inv_model}`
-    res.render("./inventory/detail", { title, nav, detailHtml })
+    const title = `${item.inv_year} ${item.inv_make} ${item.inv_model}`
+    const isFavorited = res.locals?.accountData
+      ? await favoritesModel.isFavorited(res.locals.accountData.account_id, item.inv_id)
+      : false
+
+    res.render("./inventory/detail", { title, nav, detailHtml, item, isFavorited })
   } catch (err) {
     next(err)
   }

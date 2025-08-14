@@ -8,6 +8,10 @@
         <main>
             <h1><%= title %></h1>
             <%- detailHtml %>
+            <form action="/account/favorite" method="post">
+                <input type="hidden" name="item_id" value="<%= item.inv_id %>">
+                <button type="submit"><%= isFavorited ? "💔 Remove Favorite" : "❤️ Favorite" %></button>
+            </form>
         </main>
 
 </body>
