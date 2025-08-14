@@ -22,7 +22,7 @@
                 <h2><%= fav.display_name || (fav.inv_year + " " + fav.inv_make + " " + fav.inv_model) %></h2>
               </a>
 
-              <p>Price: <%= fav.display_price %></p>
+              <p>Price: <%= fav.inv_price %></p>
 
               <form action="/account/favorite" method="post">
                 <input type="hidden" name="item_id" value="<%= fav.inv_id %>">
